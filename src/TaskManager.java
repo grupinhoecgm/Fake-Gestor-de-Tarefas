@@ -1,8 +1,3 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -10,14 +5,17 @@ public class TaskManager {
     private Queue<Task> highPriorityTasks;
     private Stack<Task> lowPriorityTasks;
     private List<Task> completedTasks;
+    private TaskCollection taskCollection;
 
     public TaskManager() {
         highPriorityTasks = new LinkedList<>();
         lowPriorityTasks = new Stack<>();
         completedTasks = new ArrayList<>();
+        taskCollection = new TaskCollection();
     }
 
     public void addTask(Task task) {
+        taskCollection.addTask(task);
         if (task.getPriority().equalsIgnoreCase("high")) {
             highPriorityTasks.add(task);
         } else {
@@ -41,8 +39,9 @@ public class TaskManager {
 
         return taskToProcess;
     }
+
     public void editTask(String id, String newState) {
-        Task task = searchTaskById(id);
+        Task task = taskCollection.getTaskById(id);
         if (task != null) {
             task.setPerformanceState(newState);
             if (newState.equals("success") || newState.equals("insucess")) {
@@ -55,27 +54,13 @@ public class TaskManager {
             }
         }
     }
-    
+
     public Task searchTaskById(String id) {
-        for (Task task : highPriorityTasks) {
-            if (task.getId().equals(id)) {
-                return task;
-            }
-        }
-        for (Task task : lowPriorityTasks) {
-            if (task.getId().equals(id)) {
-                return task;
-            }
-        }
-        return null;
+        return taskCollection.getTaskById(id);
     }
 
     public List<Task> listAllTasks() {
-        List<Task> allTasks = new ArrayList<>();
-        allTasks.addAll(highPriorityTasks);
-        allTasks.addAll(lowPriorityTasks);
-        allTasks.addAll(completedTasks);
-        return allTasks;
+        return taskCollection.getAllTasks();
     }
 
     public List<Task> listPendingTasks() {
