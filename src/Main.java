@@ -4,7 +4,6 @@ public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
             System.out.println("1. Add Task");
             System.out.println("2. Process Task");
