@@ -16,6 +16,7 @@ public class Main {
             System.out.println("9. Load State");
             System.out.println("10. Edit Task");
             System.out.println("11. Exit");
+            System.out.println("Escolha a opção:");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
