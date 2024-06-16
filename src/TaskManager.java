@@ -85,7 +85,7 @@ public class TaskManager {
         // Implementation to generate a report in a text file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 for (Task task : completedTasks) {
-                    if ("Success".equals(task.getPerformanceState())) {
+                    if ("success".equals(task.getPerformanceState())) {
                         writer.write("Task ID: " + task.getId() + "\n");
                         writer.write("Description: " + task.getDescription() + "\n");
                         writer.write("Priority: " + task.getPriority() + "\n");
