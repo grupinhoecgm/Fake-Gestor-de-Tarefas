@@ -71,6 +71,10 @@ public class Main {
                 case 7:
                     System.out.println("Enter file path for report:");
                     String reportPath = scanner.nextLine();
+                    // Adicionar a extensão .txt se não estiver presente
+                    if (!reportPath.endsWith(".txt")) {
+                        reportPath += ".txt";
+                    }
                     taskManager.generateReport(reportPath);
                     break;
                 case 8:
