@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
@@ -5,6 +6,8 @@ public class Main {
         TaskManager taskManager = new TaskManager();
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.println("");
+            System.out.println("--------------- MENU ---------------");
             System.out.println("1. Add Task");
             System.out.println("2. Process Task");
             System.out.println("3. Search Task by ID");
@@ -16,22 +19,36 @@ public class Main {
             System.out.println("9. Load State");
             System.out.println("10. Edit Task");
             System.out.println("11. Exit");
-            System.out.println("Escolha a opção:");
+            System.out.println("------------------------------------ \n");
+            System.out.print("Escolha a opção: ");
+            System.out.print("");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
             switch (choice) {
                 case 1:
-                    System.out.println("Enter description:");
-                    String description = scanner.nextLine();
-                    System.out.println("Enter priority (high/low):");
-                    String priority = scanner.nextLine();
+                    // Inserir o ID da Tarefa
                     System.out.println("Enter task ID:");
                     String id = scanner.nextLine();
-                    Task task = new Task(id, description, priority);
+                    // Inserir a descrição da Tarefa
+                    System.out.println("Enter description:");
+                    String description = scanner.nextLine();
+                    // Inserir a prioridade da Tarefa
+                    String priority;
+                    while (true) {
+                        System.out.print("Enter Priority (high/low): ");
+                        priority = scanner.nextLine().toLowerCase();
+                        if (priority.equals("high") || priority.equals("low")) {
+                            break;
+                        } else {
+                            System.out.println("Invalid priority. Please enter 'high' or 'low'.");
+                        }
+                    }
+                    Task task = new Task(id, description, priority, null);
                     taskManager.addTask(task);
-                    break;
+                break;
+
                 case 2:
                     Task processedTask = taskManager.processTask();
                     if (processedTask != null) {
@@ -67,16 +84,34 @@ public class Main {
                     for (Task t : taskManager.listCompletedTasks()) {
                         System.out.println(t.getDescription());
                     }
-                    break;
+                break;
+                
                 case 7:
                     System.out.println("Enter file path for report:");
-                    String reportPath = scanner.nextLine();
+                    String reportFileName = scanner.nextLine();
+                    // Caminho predefinido para a pasta do relatório
+                    String reportDirectoryPath = "./ReportsFolder/";
                     // Adicionar a extensão .txt se não estiver presente
-                    if (!reportPath.endsWith(".txt")) {
-                        reportPath += ".txt";
+                    if (!reportFileName.endsWith(".txt")) {
+                        reportFileName += ".txt";
                     }
-                    taskManager.generateReport(reportPath);
-                    break;
+                    String reportFullPath = reportDirectoryPath + reportFileName;
+                    // Verificar e criar o diretório se necessário
+                    File reportDirectory = new File(reportDirectoryPath);
+                    if (!reportDirectory.exists()) {
+                        if (!reportDirectory.mkdirs()) {
+                            System.out.println("Failed to create directory: " + reportDirectoryPath);
+                            break;
+                        }
+                    }
+                    try {
+                        taskManager.generateReport(reportFullPath);
+                        System.out.println("Report generated successfully at: " + reportFullPath);
+                    } catch (Exception e) {
+                        System.out.println("Failed to generate report: " + e.getMessage());
+                    }
+                break;
+
                 case 8:
                     System.out.println("Enter file path to save state:");
                     String savePath = scanner.nextLine();

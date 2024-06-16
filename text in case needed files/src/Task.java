@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Task {
     private String id;
@@ -6,13 +7,15 @@ public class Task {
     private String priority;
     private LocalDateTime completionDateTime;
     private String performanceState;
-    private String payload;
+    private JsonNode payload;
+    
 
-    public Task(String id, String description, String priority) {
+    public Task(String id, String description, String priority, JsonNode payload) {
         this.id = id;
         this.description = description;
         this.priority = priority;
         this.performanceState = "Pending";
+        this.payload = payload;
     }
 
     // Getters and Setters
@@ -33,6 +36,9 @@ public class Task {
         return completionDateTime;
     }
 
+    public JsonNode getPayload () {
+        return payload;
+    }
     public void setCompletionDateTime(LocalDateTime completionDateTime) {
         this.completionDateTime = completionDateTime;
     }
@@ -45,11 +51,9 @@ public class Task {
         this.performanceState = performanceState;
     }
 
-    public String getPayload() {
-        return payload;
-    }
 
-    public void setPayload(String payload) {
+
+    public void setPayload(JsonNode payload) {
         this.payload = payload;
     }
 }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TaskManager {
@@ -51,7 +52,15 @@ public class TaskManager {
         Task task = taskCollection.getTaskById(id);
         if (task != null) {
             task.setPerformanceState(newState);
-            if (newState.equals("success") || newState.equals("insucess")) {
+            if (newState.equalsIgnoreCase("success")) {
+                task.setCompletionDateTime(LocalDateTime.now());
+                completedTasks.add(task);
+                if (task.getPriority().equalsIgnoreCase("high")) {
+                    highPriorityTasks.remove(task);
+                } else {
+                    lowPriorityTasks.remove(task);
+                }
+            } else if (newState.equalsIgnoreCase("insucess")) {
                 completedTasks.add(task);
                 if (task.getPriority().equalsIgnoreCase("high")) {
                     highPriorityTasks.remove(task);
@@ -82,6 +91,7 @@ public class TaskManager {
     }
 
     public void generateReport(String filePath) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm:ss");
         // Implementation to generate a report in a text file
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 for (Task task : completedTasks) {
@@ -89,7 +99,7 @@ public class TaskManager {
                         writer.write("Task ID: " + task.getId() + "\n");
                         writer.write("Description: " + task.getDescription() + "\n");
                         writer.write("Priority: " + task.getPriority() + "\n");
-                        writer.write("Completion Date/Time: " + task.getCompletionDateTime() + "\n");
+                        writer.write("Completion Date/Time: " + task.getCompletionDateTime().format(formatter) + "\n");
                         writer.write("Payload: " + task.getPayload() + "\n");
                         writer.write("Performance State: " + task.getPerformanceState() + "\n");
                         writer.write("\n");
