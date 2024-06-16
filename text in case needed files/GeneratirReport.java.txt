@@ -3,19 +3,5 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public void generateReport(String filePath) extends TaskManager {
-    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-        for (Task task : completedTasks) {
-            if ("Success".equals(task.getPerformanceState())) {
-                writer.write("Task ID: " + task.getId() + "\n");
-                writer.write("Description: " + task.getDescription() + "\n");
-                writer.write("Priority: " + task.getPriority() + "\n");
-                writer.write("Completion Date/Time: " + task.getCompletionDateTime() + "\n");
-                writer.write("Payload: " + task.getPayload() + "\n");
-                writer.write("Performance State: " + task.getPerformanceState() + "\n");
-                writer.write("\n");
-            }
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+    
 }

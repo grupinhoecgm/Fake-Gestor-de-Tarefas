@@ -1,5 +1,7 @@
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -81,6 +83,21 @@ public class TaskManager {
 
     public void generateReport(String filePath) {
         // Implementation to generate a report in a text file
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                for (Task task : completedTasks) {
+                    if ("Success".equals(task.getPerformanceState())) {
+                        writer.write("Task ID: " + task.getId() + "\n");
+                        writer.write("Description: " + task.getDescription() + "\n");
+                        writer.write("Priority: " + task.getPriority() + "\n");
+                        writer.write("Completion Date/Time: " + task.getCompletionDateTime() + "\n");
+                        writer.write("Payload: " + task.getPayload() + "\n");
+                        writer.write("Performance State: " + task.getPerformanceState() + "\n");
+                        writer.write("\n");
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     public void saveState(String filePath) {
